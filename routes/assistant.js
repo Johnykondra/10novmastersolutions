@@ -34,6 +34,11 @@ router.post("/", express.json({ limit: "4kb" }), async (req, res) => {
     return res.json({ reply: result.reply });
   } catch (error) {
     console.error("AI assistant request failed:", error.message);
+    if (assistantService.isAuthenticationError(error)) {
+      return res.status(503).json({
+        error: "The assistant's Azure sign-in is not configured. The site owner must add Azure credentials and grant them access to the AI project."
+      });
+    }
     return res.status(502).json({
       error: "The assistant is temporarily unavailable. Please try again shortly."
     });

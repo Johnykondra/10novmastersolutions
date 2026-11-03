@@ -49,4 +49,10 @@ async function reply(conversationId, message) {
   };
 }
 
-module.exports = { reply };
+function isAuthenticationError(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  return /authentication failed|failed to get token|credential unavailable|authenticationerror/i
+    .test(message);
+}
+
+module.exports = { reply, isAuthenticationError };
