@@ -71,6 +71,7 @@ app.get("/", (req, res) => {
 
 app.use("/shop", require("./routes/shop"));
 app.use("/cart", require("./routes/cart"));
+app.use("/api/assistant", require("./routes/assistant"));
 app.use("/", require("./routes/auth"));
 app.use("/", require("./routes/account"));
 app.use("/", require("./routes/admin"));

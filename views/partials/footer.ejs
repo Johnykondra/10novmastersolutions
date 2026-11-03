@@ -13,10 +13,57 @@
         </div>
       </div>
     </footer>
+    <aside class="assistant-widget" aria-label="Master Solutions AI assistant">
+      <section class="assistant-panel" id="assistantPanel" aria-label="Chat with the Master Solutions assistant" hidden>
+        <div class="assistant-header">
+          <div>
+            <strong>Master Solutions Assistant</strong>
+            <span>Ask about products, repairs or services</span>
+          </div>
+          <div class="assistant-header-actions">
+            <button class="assistant-reset" type="button" aria-label="Start a new chat" title="Start a new chat">
+              <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+            </button>
+            <button class="assistant-close" type="button" aria-label="Close chat">
+              <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="assistant-messages" aria-live="polite" aria-relevant="additions text">
+          <p class="assistant-message assistant-message-bot">Hi! I’m the Master Solutions assistant. How can I help?</p>
+        </div>
+        <form class="assistant-form">
+          <label class="visually-hidden" for="assistantInput">Your message</label>
+          <input
+            class="assistant-input"
+            id="assistantInput"
+            name="message"
+            type="text"
+            maxlength="2000"
+            autocomplete="off"
+            placeholder="Type your question…"
+            required
+          />
+          <button class="assistant-submit" type="submit" aria-label="Send message">
+            <i class="bi bi-send-fill" aria-hidden="true"></i>
+          </button>
+        </form>
+      </section>
+      <button
+        class="assistant-toggle"
+        type="button"
+        aria-controls="assistantPanel"
+        aria-expanded="false"
+      >
+        <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+        <span>Ask our assistant</span>
+      </button>
+    </aside>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script src="/js/assistant.js" defer></script>
   </body>
 </html>
