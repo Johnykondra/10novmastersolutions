@@ -28,9 +28,16 @@ router.post("/", express.json({ limit: "4kb" }), async (req, res) => {
   try {
     const result = await assistantService.reply(
       req.session.assistantConversationId,
-      message
+      message,
+      req.session.assistantMessages || []
     );
-    req.session.assistantConversationId = result.conversationId;
+    if (result.conversationId) {
+      req.session.assistantConversationId = result.conversationId;
+      delete req.session.assistantMessages;
+    } else {
+      req.session.assistantMessages = result.conversationMessages;
+      delete req.session.assistantConversationId;
+    }
     return res.json({ reply: result.reply });
   } catch (error) {
     console.error("AI assistant request failed:", error.message);
@@ -47,6 +54,7 @@ router.post("/", express.json({ limit: "4kb" }), async (req, res) => {
 
 router.post("/reset", express.json({ limit: "1kb" }), (req, res) => {
   delete req.session.assistantConversationId;
+  delete req.session.assistantMessages;
   return res.json({ ok: true });
 });
 
