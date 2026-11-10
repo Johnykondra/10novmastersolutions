@@ -54,11 +54,19 @@ async function replyWithAzureOpenAI(conversationMessages, message, config) {
     ...conversationMessages,
     { role: "user", content: message }
   ];
-  const url = new URL(
-    `/openai/deployments/${encodeURIComponent(config.deployment)}/chat/completions`,
-    `${config.endpoint}/`
-  );
-  url.searchParams.set("api-version", azureOpenAIApiVersion);
+  const isV1Endpoint = /\/openai\/v1\/?$/i.test(new URL(config.endpoint).pathname);
+  const url = isV1Endpoint
+    ? new URL("chat/completions", `${config.endpoint.replace(/\/+$/, "")}/`)
+    : new URL(
+      `/openai/deployments/${encodeURIComponent(config.deployment)}/chat/completions`,
+      `${config.endpoint}/`
+    );
+  const requestBody = { messages };
+  if (isV1Endpoint) {
+    requestBody.model = config.deployment;
+  } else {
+    url.searchParams.set("api-version", azureOpenAIApiVersion);
+  }
 
   const response = await fetch(url, {
     method: "POST",
@@ -66,7 +74,7 @@ async function replyWithAzureOpenAI(conversationMessages, message, config) {
       "Content-Type": "application/json",
       "api-key": config.apiKey
     },
-    body: JSON.stringify({ messages })
+    body: JSON.stringify(requestBody)
   });
   if (!response.ok) {
     throw new Error(`Azure OpenAI request failed (HTTP ${response.status}).`);
